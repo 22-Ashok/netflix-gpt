@@ -1,18 +1,33 @@
+import { netflix_logo } from "../utils/constatnt"
+import { useDispatch } from "react-redux"
+import { signoutInfo } from "../redux/slices/userSlice";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../utils/firebase"
 
 const Header = () => {
+     const dispatch = useDispatch();
+     const navigate = useNavigate();
+
+    const signOutFunction = () => {
+        signOut(auth).then(() => {
+          dispatch(signoutInfo());
+          navigate("/");
+        }).catch((error) => {
+        });
+    }
 
     return (
-        <div className="w-screen px-5 bg-gradient-to-b from-black to-transparent h-20 flex items-center justify-between">
-            <div  className="w-36">
-              <img src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png" alt="logo" className="w-full" />
+        <div className="flex justify-between absolute top-0 w-screen px-12 items-center bg-gradient-to-b from-black">
+            <div>
+                <img src={netflix_logo} alt="logo" className="h-20 w-36" />
             </div>
-           
-           <button className="bg-red-800 text-white h-16 w-20 rounded-md text-lg">Sign out</button>
+
+            <div>
+                <button className="bg-red-800 text-white h-10 w-20 rounded-md" onClick={signOutFunction}>Sign out</button>
+            </div>
         </div>
     )
 }
 
-export default Header 
-
-
-//bg-gradient-to-b from-black to-transparent absolute ml-32 my-5 w-36
+export default Header
